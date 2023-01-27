@@ -1,0 +1,38 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  firstname String   @db.VarChar(150)
+  lastname  String   @db.VarChar(150)
+  email     String   @db.VarChar(150)
+  Password  String   @db.VarChar(150)
+  Role      Int      @default(2)
+  createdat DateTime @default(now()) @db.Timestamp(6)
+}
+
+model Form {
+  id        Int         @id @default(autoincrement())
+  formname  String      @db.VarChar(150)
+  createdat DateTime    @default(now()) @db.Timestamp(6)
+  Questions Questions[]
+}
+
+model Questions {
+  id        Int       @id @default(autoincrement())
+  formid    Int
+  question  String    @db.VarChar(150)
+  createdat DateTime  @default(now()) @db.Timestamp(6)
+  Answers   Answers[]
+  Form      Form      @relation(fields: [formid], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model Answers {
+  id         Int       @id @default(autoincrement())
+  questionid Int
+  answer     String    @db.VarChar(150)
+  createdat  DateTime  @default(now()) @db.Timestamp(6)
+  Questions  Questions @relation(fields: [questionid], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
