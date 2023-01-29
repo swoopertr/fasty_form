@@ -1,0 +1,57 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../prisma/client"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int       @id @default(autoincrement())
+  firstname String    @db.VarChar(150)
+  lastname  String    @db.VarChar(150)
+  email     String    @db.VarChar(150)
+  Password  String    @db.VarChar(150)
+  Role      Int       @default(2)
+  createdat DateTime  @default(now()) @db.Timestamp(6)
+  token     String?   @db.VarChar(150)
+  tokenexp  DateTime? @db.Timestamp(6)
+}
+
+model Form {
+  id        Int         @id @default(autoincrement())
+  formname  String      @db.VarChar(150)
+  createdat DateTime    @default(now()) @db.Timestamp(6)
+  Questions Questions[]
+}
+
+model Questions {
+  id          Int           @id @default(autoincrement())
+  formid      Int
+  question    String        @db.VarChar(150)
+  createdat   DateTime      @default(now()) @db.Timestamp(6)
+  Answers     Answers[]
+  Form        Form          @relation(fields: [formid], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  UserAnswers UserAnswers[]
+}
+
+model Answers {
+  id          Int           @id @default(autoincrement())
+  questionid  Int
+  answer      String        @db.VarChar(150)
+  createdat   DateTime      @default(now()) @db.Timestamp(6)
+  Questions   Questions     @relation(fields: [questionid], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  UserAnswers UserAnswers[]
+}
+
+model UserAnswers {
+  id               Int       @id @default(autoincrement())
+  questionid       Int
+  questionanswerid Int
+  userid           Int
+  createdat        DateTime  @default(now()) @db.Timestamp(6)
+  Answers          Answers   @relation(fields: [questionanswerid], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  Questions        Questions @relation(fields: [questionid], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}

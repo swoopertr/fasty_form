@@ -1,11 +1,10 @@
 const fastify = require('fastify')({
   logger: false
-})
+});
 
-fastify.get('/', async (request, reply) => {
-    reply.code(200).header("myhead", "1234").send({status: "ok"});
-  return;// { hello: 'world' }
-})
+
+fastify.register(require('./Route/index').build);
+
 
 /**
  * Run the server!

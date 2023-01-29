@@ -5,16 +5,16 @@ CREATE TABLE public."User" (
 	Email varchar(150) NOT NULL,
 	"Password" varchar(150) NOT NULL,
 	"Role" int NOT NULL DEFAULT 2,
+    "token" varchar(150) NULL,
+	tokenexp timestamp NULL,
 	CreatedAt TIMESTAMP NOT NULL DEFAULT now()
 );
-
 
 CREATE TABLE public."Form" (
 	Id SERIAL primary KEY NOT NULL,
 	FormName varchar(150) NOT NULL,
 	CreatedAt TIMESTAMP NOT NULL DEFAULT now()
 );
-
 
 CREATE TABLE public."Questions" (
 	Id SERIAL primary KEY NOT NULL,
@@ -31,8 +31,3 @@ CREATE TABLE public."Answers" (
 	CreatedAt TIMESTAMP NOT NULL DEFAULT now(),
 	foreign key (QuestionId) references public."Questions"(Id)
 );
-
-
-
-
-
