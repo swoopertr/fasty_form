@@ -2,13 +2,8 @@ const fastify = require('fastify')({
   logger: false
 });
 
-
 fastify.register(require('./Route/index').build);
 
-
-/**
- * Run the server!
- */
 const start = async () => {
   try {
     await fastify.listen({ port: 3000, host:"0.0.0.0" })
