@@ -3,6 +3,7 @@ const fastify = require('fastify')({
 });
 
 fastify.register(require('./Route/index').build);
+//todo authentication middleware should coded.
 
 const start = async () => {
   try {
